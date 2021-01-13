@@ -1,0 +1,27 @@
+{
+  "name": "DHTxx",
+  "keywords": "DHT11,DHT21,DHT22, SensESP, Signal K, marine, boat, sensor, hardware, embedded, device",
+  "description": "Library to use DHTxx sensors with SignalK/SensESP",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/SensESP/DHTxx.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Petter Lerenius",
+      "email": "p.lerenius@gmail.com",
+      "url": "https://github.com/plerenius/",
+      "maintainer": true
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "DHT Sensor Library"
+    }
+  ],
+  "version": "0.0.1",
+  "frameworks": "arduino",
+  "platforms": "*"
+}
