@@ -5,20 +5,15 @@
 
 
 // DHTxx represents a DHT temperature & pressure sensor.
-DHTxx::DHTxx(uint8_t pin, uint8_t type, String config_path) {
-    pDHT_ = new DHT(pin, type);
-    pDHT_->begin();
-}
-
-// TODO(Petter L): implement check_status.
-void DHTxx::check_status() {
-  return;
+DHTxx::DHTxx(uint8_t pin, uint8_t type) {
+    dht_ = new DHT(pin, type);
+    dht_->begin();
 }
 
 // DHTvalue reads and outputs the specified type of value of a DHTxx sensor
-DHTValue::DHTValue(DHTxx* pDHTxx, DHTValType val_type,
+DHTValue::DHTValue(DHTxx* dhtxx, DHTValType val_type,
                    uint read_delay, String config_path) :
-                   NumericSensor(config_path), pDHTxx_{pDHTxx},
+                   NumericSensor(config_path), dhtxx_{dhtxx},
                    val_type_{val_type}, read_delay_{read_delay} {
       load_configuration();
 }
@@ -29,11 +24,11 @@ void DHTValue::enable() {
   app.onRepeat(read_delay_, [this](){
       if (val_type_ == temperature) {
         // Kelvin is Celsius + 273.15
-        output = pDHTxx_->pDHT_->readTemperature() + 273.15;
+        output = dhtxx_->dht_->readTemperature() + 273.15;
       } else if (val_type_ == humidity) {
-        output = pDHTxx_->pDHT_->readHumidity();
+        output = dhtxx_->dht_->readHumidity();
       } else {
-        output = 0.0;
+        debugE("DHTValue:enable(): Didn't recognize the val_type.");
       }
 
       notify();

@@ -13,7 +13,7 @@
 
 #include "sensesp_app.h"
 #include "signalk/signalk_output.h"
-#include "sensors/dhtxx.h"
+#include "dhtxx.h"
 
 ReactESP app([] () {
   #ifndef SERIAL_DEBUG_DISABLED
@@ -39,7 +39,7 @@ ReactESP app([] () {
 #endif
 
   // Create a DHTxx object, which represents the physical sensor.
-  auto* pDHTxx = new DHTxx(pin, DHTTYPE);
+  auto* dhtxx = new DHTxx(pin, DHTTYPE);
 
   // Define the read_delays you're going to use:
   const uint read_delay = 2000;  // once every other second
@@ -47,18 +47,18 @@ ReactESP app([] () {
   // Create a DHTvalue, which is used to read a specific value from
   // the DHTxx sensor, and send its output to SignalK as a number (float).
   // This one is for the temperature reading.
-  auto* pDHTtemperature = new DHTValue(pDHTxx, DHTValue::temperature,
-    read_delay, "Outside/Temperature");
+  auto* dht_temperature = new DHTValue(dhtxx, DHTValue::temperature,
+    read_delay, "/Outside/Temperature");
 
-      pDHTtemperature->connectTo(
+      dht_temperature->connect_to(
         new SKOutputNumber("environment.outside.temperature"));
 
 
   // Do the same for the humidity value.
-  auto* pDHThumidity = new DHTValue(pDHTxx, DHTValue::humidity,
-    read_delay, "Outside/Humidity");
+  auto* dht_humidity = new DHTValue(dhtxx, DHTValue::humidity,
+    read_delay, "/Outside/Humidity");
 
-      pDHThumidity->connectTo(
+      dht_humidity->connect_to(
         new SKOutputNumber("environment.outside.humidity"));
 
 

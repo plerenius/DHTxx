@@ -5,11 +5,6 @@
 
 #include "sensors/sensor.h"
 
-// DHTxx represents a temperature / humidity sensor.
-// The constructore creates a pointer to the instance,
-// and starts up the sensor. The pointer is passed to DHTvalue,
-// which retrieves the specified value.
-
 /**
  * @brief Represents an ADAfruit (or compatible) DHT temperature/humidity sensor.
  * 
@@ -17,22 +12,21 @@
  * starts up the sensor. The pointer is passed to DHTValue, which retrieves
  * the specified value.
  * 
+ * @param pin specifies which pin that is being used for the sensor.
+ * 
  * @param type specifies which version of the sensor that is being used.
  **/
 class DHTxx {
  public:
-  DHTxx(uint8_t pin, uint8_t type, String config_path = "");
-  DHT* pDHT_;
-
- private:
-  void check_status();
+  DHTxx(uint8_t pin, uint8_t type);
+  DHT* dht_;
 };
 
 
 /** 
  * @brief DHTValue reads and outputs the specified value of a DHT sensor
  * 
- * @param pDHTxx A pointer to an instance of a DHTxx.
+ * @param dhtxx A pointer to an instance of a DHTxx.
  * 
  * @param val_type The type of value you're reading: temperature or humidity.
  * 
@@ -45,10 +39,10 @@ class DHTValue : public NumericSensor {
   // Pass one of these in the constructor to DHTvalue() to tell
   // which type of value you want to output
   enum DHTValType { temperature, humidity };
-  DHTValue(DHTxx* pDHTxx, DHTValType val_type, uint read_delay = 500,
+  DHTValue(DHTxx* dhtxx, DHTValType val_type, uint read_delay = 500,
            String config_path = "");
   void enable() final;
-  DHTxx* pDHTxx_;
+  DHTxx* dhtxx_;
 
  private:
     DHTValType val_type_;
