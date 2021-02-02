@@ -26,7 +26,8 @@ void DHTValue::enable() {
         // Kelvin is Celsius + 273.15
         output = dhtxx_->dht_->readTemperature() + 273.15;
       } else if (val_type_ == humidity) {
-        output = dhtxx_->dht_->readHumidity();
+        // relative humidity is a percentage or ratio, so should be divided by 100
+        output = dhtxx_->dht_->readHumidity() / 100;
       } else {
         debugE("DHTValue:enable(): Didn't recognize the val_type.");
       }
