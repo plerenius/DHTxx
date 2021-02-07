@@ -28,7 +28,19 @@ void DHTValue::enable() {
       } else if (val_type_ == humidity) {
         // relative humidity is a percentage or ratio, so should be divided by 100
         output = dhtxx_->dht_->readHumidity() / 100;
-      } else {
+      } else if (val_type_ == dewPointTemperature) {
+          const float a = 17.27;
+          const float b = 237.7; // in Celsius
+
+          float h= dhtxx_->dht_->readHumidity()/100; //humidity in percent, so divide by 100
+          float t= dhtxx_->dht_->readTemperature();
+
+          float alfa=(a*t)/(b+t)+ log(h);
+
+          float dpt = (b*alfa)/(a-alfa); 
+        
+          output = dpt + 273.15; // Kelvin is Celsius + 273.15
+       } else {
         debugE("DHTValue:enable(): Didn't recognize the val_type.");
       }
 
