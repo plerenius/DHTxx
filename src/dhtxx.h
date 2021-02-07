@@ -38,7 +38,7 @@ class DHTValue : public NumericSensor {
  public:
   // Pass one of these in the constructor to DHTvalue() to tell
   // which type of value you want to output
-  enum DHTValType { temperature, humidity };
+  enum DHTValType { temperature, humidity, dewPointTemperature };
   DHTValue(DHTxx* dhtxx, DHTValType val_type, uint read_delay = 500,
            String config_path = "");
   void enable() final;
