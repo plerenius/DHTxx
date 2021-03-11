@@ -23,7 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install platformio
       - name: Run PlatformIO
-        run: platformio ci -v --lib . -c ci/platformio.ini
+        run: platformio ci -v --lib . -c ci/platformio.ini --board=${{ matrix.target_device }}
         env:
           PLATFORMIO_CI_SRC: ${{ matrix.example }}
-          CI_TARGET_DEVICE: ${{ matrix.target_device }}
+      - name: Archive outputfile
+        uses: actions/upload-artifact@v2
+        with:
+          name: dhtxx_firmware_${{ matrix.target_device }}
+          path: .pio/build/d1_mini/firmware.bin
